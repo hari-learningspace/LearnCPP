@@ -1,4 +1,4 @@
-#include "math.h"
+#include "MathApp.h"
 #include <gtest/gtest.h>
  
 TEST(SquareRootTest, PositiveNos) { 

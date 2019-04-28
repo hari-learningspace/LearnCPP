@@ -15,7 +15,8 @@
                 "${workspaceFolder}/../lib/googletest/googletest/include/",
                 "${workspaceFolder}/../lib/googletest/googletest",
                 "${workspaceFolder}/../lib/googletest/googlemock/",
-                "${workspaceFolder}/../lib/googletest/googlemock/include"     
+                "${workspaceFolder}/../lib/googletest/googlemock/include",
+                "${workspaceFolder}/inc"    
                 ]
             },
             "windowsSdkVersion": "10.0.17763.0",
