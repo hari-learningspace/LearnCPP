@@ -12,7 +12,7 @@ enable_testing()
 
 include_directories("${CMAKE_SOURCE_DIR}/inc"
     "${CMAKE_SOURCE_DIR}/../lib/googletest/googletest/include/"
-    "${CMAKE_SOURCE_DIR}/../lib/googletestgooglemock/include/")
+    "${CMAKE_SOURCE_DIR}/../lib/googletest/googlemock/include/")
 
 add_subdirectory(../lib/googletest build)
 add_subdirectory(src)
