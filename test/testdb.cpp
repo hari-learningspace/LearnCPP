@@ -10,6 +10,8 @@ using ::testing::Return;
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::InvokeWithoutArgs;
+using ::testing::DoDefault;
+using ::testing::DoAll;
 
 class DataBaseConnect {
     public:
@@ -155,6 +157,10 @@ struct testABC {
         return true;
     }
 
+    void DummyLogin2(string username, string password){
+        cout << "Dummy Function Called\n";
+    }
+
 };
 
 TEST(MyDBTest, InvokeStruct)
@@ -191,6 +197,46 @@ TEST(MyDBTest, InvokeGlobalFn)
     EXPECT_CALL(mdb, login("Hari", "SimplePass"))
     .Times(AtLeast(1))
     .WillOnce(InvokeWithoutArgs(DummyFn));
+
+    //ACT
+    int retvalue = db.Init("Hari", "SimplePass");
+
+    //Assert
+    EXPECT_EQ(retvalue,1);
+}
+
+TEST(MyDBTest, DefaultAction)
+{
+    //Arrange
+    MockDB mdb;
+    MyDatabase db(mdb);
+    testABC dbtest;
+
+    ON_CALL(mdb, login(_,_)).WillByDefault(Invoke(&dbtest, &testABC::DummyLogin));
+    EXPECT_CALL(mdb, login(_,_))
+    .Times(AtLeast(1))
+    .WillOnce(DoDefault());
+
+    //ACT
+    int retvalue = db.Init("Hari", "SimplePass");
+
+    //Assert
+    EXPECT_EQ(retvalue,1);
+}
+
+
+
+TEST(MyDBTest, MultipleAction)
+{
+    //Arrange
+    MockDB mdb;
+    MyDatabase db(mdb);
+    testABC dbtest;
+
+    EXPECT_CALL(mdb, login("Hari", "SimplePass"))
+    .Times(AtLeast(1))
+    .WillOnce(DoAll(Invoke(&dbtest, &testABC::DummyLogin2), 
+                    Invoke(&dbtest, &testABC::DummyLogin2),Return(true)));
 
     //ACT
     int retvalue = db.Init("Hari", "SimplePass");
