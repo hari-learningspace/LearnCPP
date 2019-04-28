@@ -30,7 +30,9 @@ class MyDatabase {
 
         int Init(string username, string password){
             if(dbC.login(username,password) != true) {
-                cout << "DB Failure\n"; return -1;
+              if(dbC.login(username,password) != true) {  
+                cout << "DB Failure 2nd Time\n"; return -1;
+                } 
             } else {
                 cout << "DB Success\n"; return 1;
             }
@@ -43,9 +45,41 @@ TEST(MyDBTest, LoginTest)
     MockDB mdb;
     MyDatabase db(mdb);
 
-    EXPECT_CALL(mdb, login("Hari","Simplepass"))
+    EXPECT_CALL(mdb, login("Hari", "SimplePass"))
     .Times(1)
-    .WillOnce(Return(false));
+    .WillOnce(Return(true));
+
+    //ACT
+    int retvalue = db.Init("Hari", "SimplePass");
+
+    //Assert
+    EXPECT_EQ(retvalue,1);
+}
+
+TEST(MyDBTest, LoginFailure)
+{
+    //Arrange
+    MockDB mdb;
+    MyDatabase db(mdb);
+
+    EXPECT_CALL(mdb, login(_,_))
+    .Times(2)
+    .WillRepeatedly(Return(false));
+
+    //ACT
+    int retvalue = db.Init("Hari", "SimplePass");
+
+    //Assert
+    EXPECT_EQ(retvalue,-1);
+}
+
+TEST(MyDBTest, LoginOnCall)
+{
+    //Arrange
+    MockDB mdb;
+    MyDatabase db(mdb);
+
+    ON_CALL(mdb, login(_,_)).WillByDefault(Return(true));
 
     //ACT
     int retvalue = db.Init("Hari", "SimplePass");

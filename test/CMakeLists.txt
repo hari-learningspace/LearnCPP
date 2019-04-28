@@ -14,7 +14,7 @@ include_directories(../inc)
 include_directories(../../lib/googletest/googletest/include ../../lib/googletest/googlemock/include)
 add_executable(${This} ${SOURCES})
 target_link_libraries(${This} 
-                      gmock_main 
+                      gmock_main
                     )
 
 add_test(
