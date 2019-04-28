@@ -8,6 +8,8 @@ set(CXX_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
+
+
 enable_testing()
 
 include_directories("${CMAKE_SOURCE_DIR}/inc"
